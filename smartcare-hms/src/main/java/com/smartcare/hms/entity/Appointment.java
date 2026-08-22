@@ -1,5 +1,6 @@
 package com.smartcare.hms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
@@ -20,11 +21,13 @@ public class Appointment {
     @NotNull(message = "Patient is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Patient patient;
 
     @NotNull(message = "Doctor is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Doctor doctor;
 
     @NotNull(message = "Appointment date is required")
@@ -39,7 +42,6 @@ public class Appointment {
     @Column(name = "consultation_room")
     private String consultationRoom;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_status", nullable = false, length = 20)
     private AppointmentStatus appointmentStatus = AppointmentStatus.SCHEDULED;

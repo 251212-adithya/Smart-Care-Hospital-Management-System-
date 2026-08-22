@@ -11,6 +11,7 @@ import com.smartcare.hms.repository.DoctorRepository;
 import com.smartcare.hms.repository.PatientRepository;
 import com.smartcare.hms.service.AppointmentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +33,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public Appointment bookAppointment(Appointment appointment) {
         // Frontend එකෙන් එන ID මඟින් Database එකෙන් සම්පූර්ණ Patient සහ Doctor ලබා ගැනීම
         resolveAndAttachPatientAndDoctor(appointment);
@@ -54,6 +56,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public Appointment updateAppointment(Long id, Appointment updated) {
         Appointment existing = getAppointmentById(id);
 

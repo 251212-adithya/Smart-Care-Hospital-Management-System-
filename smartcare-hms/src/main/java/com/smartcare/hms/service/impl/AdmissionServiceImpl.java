@@ -1,14 +1,17 @@
 package com.smartcare.hms.service.impl;
 
 import com.smartcare.hms.entity.Admission;
+import com.smartcare.hms.entity.Patient;
 import com.smartcare.hms.entity.Room;
 import com.smartcare.hms.exception.InvalidInputException;
 import com.smartcare.hms.exception.ResourceNotFoundException;
 import com.smartcare.hms.exception.RoomNotAvailableException;
 import com.smartcare.hms.repository.AdmissionRepository;
+import com.smartcare.hms.repository.PatientRepository;
 import com.smartcare.hms.repository.RoomRepository;
 import com.smartcare.hms.service.AdmissionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,17 +25,33 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     private final AdmissionRepository admissionRepository;
     private final RoomRepository roomRepository;
+    private final PatientRepository patientRepository;
 
-    public AdmissionServiceImpl(AdmissionRepository admissionRepository, RoomRepository roomRepository) {
+    public AdmissionServiceImpl(AdmissionRepository admissionRepository,
+                                RoomRepository roomRepository,
+                                PatientRepository patientRepository) {
         this.admissionRepository = admissionRepository;
         this.roomRepository = roomRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
+    @Transactional
     public Admission admitPatient(Admission admission) {
         if (admission.getPatient() == null || admission.getRoom() == null) {
             throw new InvalidInputException("Patient and room must be specified for an admission");
         }
+
+        // Resolve Patient from DB
+        Long patientId = admission.getPatient().getPatientId();
+        if (patientId == null) {
+            throw new InvalidInputException("Patient ID is required");
+        }
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + patientId));
+        admission.setPatient(patient);
+
+        // Resolve Room from DB
         Room room = roomRepository.findById(admission.getRoom().getRoomId())
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
 
@@ -52,6 +71,7 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
+    @Transactional
     public Admission dischargePatient(Long admissionId) {
         Admission admission = getAdmissionById(admissionId);
         admission.setDischargeDate(LocalDate.now());

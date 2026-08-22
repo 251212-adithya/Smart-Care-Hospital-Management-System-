@@ -1,5 +1,6 @@
 package com.smartcare.hms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -21,6 +22,7 @@ public class Department {
 
     @OneToOne
     @JoinColumn(name = "head_doctor_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "department"})
     private Doctor headDoctor;
 
     public Department() {}
