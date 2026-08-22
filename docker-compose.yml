@@ -20,6 +20,7 @@ services:
       context: ./smartcare-hms
       dockerfile: Dockerfile
     container_name: smartcare_backend
+    restart: on-failure
     ports:
       - "8080:8080"
     environment:
