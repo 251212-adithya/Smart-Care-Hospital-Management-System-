@@ -74,6 +74,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public void cancelAppointment(Long id) {
         Appointment existing = getAppointmentById(id);
         existing.setAppointmentStatus(Appointment.AppointmentStatus.CANCELLED);

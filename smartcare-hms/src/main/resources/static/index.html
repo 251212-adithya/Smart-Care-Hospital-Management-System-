@@ -156,9 +156,17 @@
         <!-- 2. DOCTORS TAB CONTENT -->
         <div id="tab-doctors" class="tab-pane hidden space-y-6">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-bold text-slate-800">Doctors Directory</h3>
-                    <button onclick="openDoctorModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition flex items-center"><i class="fa-solid fa-plus mr-2"></i>Add Doctor</button>
+                    <button onclick="openDoctorModalForAdd()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition flex items-center"><i class="fa-solid fa-plus mr-2"></i>Add Doctor</button>
+                </div>
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="doctor-search" oninput="searchDoctors()" placeholder="Search doctors by name..."
+                               class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-indigo-600">
+                    </div>
+                    <button onclick="clearDoctorSearch()" class="px-3 py-2 border border-slate-300 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 shrink-0" title="Clear search"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div id="doctors-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="text-center py-6 text-slate-400">Loading doctors...</div>
@@ -169,9 +177,17 @@
         <!-- 3. PATIENTS TAB CONTENT -->
         <div id="tab-patients" class="tab-pane hidden space-y-6">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-bold text-slate-800">Patient Management & Registry</h3>
-                    <button onclick="openPatientModal()" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition flex items-center"><i class="fa-solid fa-user-plus mr-2"></i>Register Patient</button>
+                    <button onclick="openPatientModalForAdd()" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition flex items-center"><i class="fa-solid fa-user-plus mr-2"></i>Register Patient</button>
+                </div>
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="patient-search" oninput="searchPatients()" placeholder="Search patients by name..."
+                               class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-cyan-600">
+                    </div>
+                    <button onclick="clearPatientSearch()" class="px-3 py-2 border border-slate-300 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 shrink-0" title="Clear search"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -361,7 +377,7 @@
 <div id="doctorModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center z-50">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 border border-slate-200">
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-user-doctor text-indigo-600 mr-2"></i>Add New Doctor</h3>
+            <h3 id="doctorModalTitle" class="text-lg font-bold text-slate-800"><i class="fa-solid fa-user-doctor text-indigo-600 mr-2"></i>Add New Doctor</h3>
             <button onclick="closeDoctorModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <form id="doctorForm" onsubmit="submitDoctor(event)" class="space-y-4">
@@ -387,7 +403,7 @@
             </div>
             <div class="flex justify-end space-x-3 pt-2">
                 <button type="button" onclick="closeDoctorModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
-                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 shadow">Save Doctor</button>
+                <button type="submit" id="doctorSubmitBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 shadow">Save Doctor</button>
             </div>
         </form>
     </div>
@@ -397,7 +413,7 @@
 <div id="patientModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center z-50">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 border border-slate-200 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-user-plus text-cyan-600 mr-2"></i>Register New Patient</h3>
+            <h3 id="patientModalTitle" class="text-lg font-bold text-slate-800"><i class="fa-solid fa-user-plus text-cyan-600 mr-2"></i>Register New Patient</h3>
             <button onclick="closePatientModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <form id="patientForm" onsubmit="submitPatient(event)" class="space-y-4">
@@ -439,7 +455,7 @@
             </div>
             <div class="flex justify-end space-x-3 pt-2">
                 <button type="button" onclick="closePatientModal()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
-                <button type="submit" class="px-4 py-2 bg-cyan-600 text-white rounded-xl text-sm font-semibold hover:bg-cyan-700 shadow">Register Patient</button>
+                <button type="submit" id="patientSubmitBtn" class="px-4 py-2 bg-cyan-600 text-white rounded-xl text-sm font-semibold hover:bg-cyan-700 shadow">Register Patient</button>
             </div>
         </form>
     </div>
@@ -476,6 +492,7 @@
         </div>
         <form id="billForm" onsubmit="submitBill(event)" class="space-y-4">
             <div><label class="block text-xs font-bold text-slate-600 uppercase mb-1">Patient ID</label><input type="number" id="bill-patientId" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-indigo-600"></div>
+            <div><label class="block text-xs font-bold text-slate-600 uppercase mb-1">Bill Date</label><input type="date" id="bill-date" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-indigo-600"></div>
             <div><label class="block text-xs font-bold text-slate-600 uppercase mb-1">Consultation Charge</label><input type="number" step="0.01" id="bill-consultation" value="0" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-indigo-600"></div>
             <div><label class="block text-xs font-bold text-slate-600 uppercase mb-1">Room Charge</label><input type="number" step="0.01" id="bill-room" value="0" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-indigo-600"></div>
             <div><label class="block text-xs font-bold text-slate-600 uppercase mb-1">Lab Charge</label><input type="number" step="0.01" id="bill-lab" value="0" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-indigo-600"></div>
@@ -509,7 +526,10 @@
     function closePatientModal() { closeModal('patientModal'); }
     function openTreatmentModal() { openModal('treatmentModal'); }
     function closeTreatmentModal() { closeModal('treatmentModal'); }
-    function openBillModal() { openModal('billModal'); }
+    function openBillModal() {
+        document.getElementById('bill-date').value = new Date().toISOString().slice(0, 10);
+        openModal('billModal');
+    }
     function closeBillModal() { closeModal('billModal'); }
 
     // ==================== HELPER: show toast ====================
@@ -538,28 +558,76 @@
     }
 
     // ==================== DOCTORS CRUD ====================
+    // Holds the doctor currently being edited (null = the modal is in "add" mode).
+    let editingDoctor = null;
+
+    function renderDoctors(doctors) {
+        const container = document.getElementById('doctors-list');
+        if (!doctors.length) { container.innerHTML = '<div class="col-span-2 text-center py-6 text-slate-400">No doctors found</div>'; return; }
+        container.innerHTML = doctors.map(d => `
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center text-2xl font-bold"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">${d.fullName || 'N/A'}</h4>
+                        <p class="text-xs text-indigo-600 font-semibold">${d.specialization || ''} (${d.qualification || ''})</p>
+                        <span class="text-[11px] text-slate-500 block">Fee: Rs. ${d.consultationFee || 0} | ${d.contactNumber || ''}</span>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="editDoctor(${d.doctorId})" class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 flex items-center justify-center" title="Edit"><i class="fa-solid fa-pen text-xs"></i></button>
+                    <button onclick="deleteDoctor(${d.doctorId})" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center" title="Delete"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>
+            </div>
+        `).join('');
+    }
+
     async function fetchDoctors() {
         try {
             const res = await fetch(API + '/api/doctors');
-            const doctors = await res.json();
-            const container = document.getElementById('doctors-list');
-            if (doctors.length === 0) { container.innerHTML = '<div class="col-span-2 text-center py-6 text-slate-400">No doctors found</div>'; return; }
-            container.innerHTML = doctors.map(d => `
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center text-2xl font-bold"><i class="fa-solid fa-user-doctor"></i></div>
-                        <div>
-                            <h4 class="font-bold text-slate-800">${d.fullName || 'N/A'}</h4>
-                            <p class="text-xs text-indigo-600 font-semibold">${d.specialization || ''} (${d.qualification || ''})</p>
-                            <span class="text-[11px] text-slate-500 block">Fee: Rs. ${d.consultationFee || 0} | ${d.contactNumber || ''}</span>
-                        </div>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button onclick="deleteDoctor(${d.doctorId})" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center" title="Delete"><i class="fa-solid fa-trash text-xs"></i></button>
-                    </div>
-                </div>
-            `).join('');
+            renderDoctors(await res.json());
         } catch (e) { console.error('Error fetching doctors:', e); }
+    }
+
+    async function searchDoctors() {
+        const term = document.getElementById('doctor-search').value.trim();
+        if (!term) { fetchDoctors(); return; }
+        try {
+            const res = await fetch(API + '/api/doctors/search?name=' + encodeURIComponent(term));
+            if (!res.ok) { showToast('Search failed', true); return; }
+            renderDoctors(await res.json());
+        } catch (e) { showToast('Server connection error', true); }
+    }
+
+    function clearDoctorSearch() {
+        document.getElementById('doctor-search').value = '';
+        fetchDoctors();
+    }
+
+    // Reuses the single doctor modal for both add and edit.
+    async function editDoctor(id) {
+        try {
+            const res = await fetch(API + '/api/doctors/' + id);
+            if (!res.ok) { showToast('Could not load doctor', true); return; }
+            const d = await res.json();
+            editingDoctor = d;
+            document.getElementById('doc-fullName').value = d.fullName || '';
+            document.getElementById('doc-contact').value = d.contactNumber || '';
+            document.getElementById('doc-qualification').value = d.qualification || '';
+            document.getElementById('doc-specialization').value = d.specialization || '';
+            document.getElementById('doc-fee').value = d.consultationFee != null ? d.consultationFee : '';
+            document.getElementById('doctorModalTitle').innerHTML = '<i class="fa-solid fa-user-doctor text-indigo-600 mr-2"></i>Edit Doctor';
+            document.getElementById('doctorSubmitBtn').textContent = 'Update Doctor';
+            openModal('doctorModal');
+        } catch (e) { showToast('Server connection error', true); }
+    }
+
+    function openDoctorModalForAdd() {
+        editingDoctor = null;
+        document.getElementById('doctorForm').reset();
+        document.getElementById('doctorModalTitle').innerHTML = '<i class="fa-solid fa-user-doctor text-indigo-600 mr-2"></i>Add New Doctor';
+        document.getElementById('doctorSubmitBtn').textContent = 'Save Doctor';
+        openModal('doctorModal');
     }
 
     async function submitDoctor(event) {
@@ -571,10 +639,29 @@
             specialization: document.getElementById('doc-specialization').value,
             consultationFee: parseFloat(document.getElementById('doc-fee').value)
         };
+        // The modal has no department picker, so carry the existing one through
+        // on edit - otherwise updating a doctor would clear their department.
+        if (editingDoctor && editingDoctor.department) data.department = editingDoctor.department;
+
+        const editing = editingDoctor !== null;
+        const url = editing ? API + '/api/doctors/' + editingDoctor.doctorId : API + '/api/doctors';
         try {
-            const res = await fetch(API + '/api/doctors', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-            if (res.ok) { closeDoctorModal(); document.getElementById('doctorForm').reset(); fetchDoctors(); fetchDashboardStats(); showToast('Doctor added successfully!'); }
-            else { const err = await res.json(); showToast(err.messages ? err.messages.join(', ') : 'Failed to save doctor', true); }
+            const res = await fetch(url, {
+                method: editing ? 'PUT' : 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                closeDoctorModal();
+                document.getElementById('doctorForm').reset();
+                editingDoctor = null;
+                searchDoctors();
+                fetchDashboardStats();
+                showToast(editing ? 'Doctor updated successfully!' : 'Doctor added successfully!');
+            } else {
+                const err = await res.json();
+                showToast(err.messages ? err.messages.join(', ') : 'Failed to save doctor', true);
+            }
         } catch (e) { showToast('Server connection error', true); }
     }
 
@@ -582,31 +669,81 @@
         if (!confirm('Are you sure you want to delete this doctor?')) return;
         try {
             const res = await fetch(API + '/api/doctors/' + id, { method: 'DELETE' });
-            if (res.ok) { fetchDoctors(); fetchDashboardStats(); showToast('Doctor deleted'); }
+            if (res.ok) { searchDoctors(); fetchDashboardStats(); showToast('Doctor deleted'); }
             else { showToast('Failed to delete doctor', true); }
         } catch (e) { showToast('Server error', true); }
     }
 
     // ==================== PATIENTS CRUD ====================
+    // Holds the patient currently being edited (null = the modal is in "add" mode).
+    let editingPatient = null;
+
+    function renderPatients(patients) {
+        const tbody = document.getElementById('patients-table-body');
+        if (!patients.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-slate-400">No patients found</td></tr>'; return; }
+        tbody.innerHTML = patients.map(p => `
+            <tr class="hover:bg-slate-50 transition">
+                <td class="py-3 px-4 font-bold text-slate-800">#${p.patientId}</td>
+                <td class="py-3 px-4 font-medium">${p.fullName || 'N/A'}</td>
+                <td class="py-3 px-4">${p.contactNumber || ''}</td>
+                <td class="py-3 px-4">${p.gender || ''}</td>
+                <td class="py-3 px-4"><span class="bg-indigo-50 text-indigo-600 text-xs px-2 py-0.5 rounded-full font-bold">${p.bloodGroup || ''}</span></td>
+                <td class="py-3 px-4 whitespace-nowrap">
+                    <button onclick="editPatient(${p.patientId})" class="text-indigo-600 hover:text-indigo-800 text-xs font-semibold mr-3"><i class="fa-solid fa-pen mr-1"></i>Edit</button>
+                    <button onclick="deletePatient(${p.patientId})" class="text-red-500 hover:text-red-700 text-xs font-semibold"><i class="fa-solid fa-trash mr-1"></i>Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
     async function fetchPatients() {
         try {
             const res = await fetch(API + '/api/patients');
-            const patients = await res.json();
-            const tbody = document.getElementById('patients-table-body');
-            if (patients.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-slate-400">No patients found</td></tr>'; return; }
-            tbody.innerHTML = patients.map(p => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="py-3 px-4 font-bold text-slate-800">#${p.patientId}</td>
-                    <td class="py-3 px-4 font-medium">${p.fullName || 'N/A'}</td>
-                    <td class="py-3 px-4">${p.contactNumber || ''}</td>
-                    <td class="py-3 px-4">${p.gender || ''}</td>
-                    <td class="py-3 px-4"><span class="bg-indigo-50 text-indigo-600 text-xs px-2 py-0.5 rounded-full font-bold">${p.bloodGroup || ''}</span></td>
-                    <td class="py-3 px-4">
-                        <button onclick="deletePatient(${p.patientId})" class="text-red-500 hover:text-red-700 text-xs font-semibold"><i class="fa-solid fa-trash mr-1"></i>Delete</button>
-                    </td>
-                </tr>
-            `).join('');
+            renderPatients(await res.json());
         } catch (e) { console.error('Error fetching patients:', e); }
+    }
+
+    async function searchPatients() {
+        const term = document.getElementById('patient-search').value.trim();
+        if (!term) { fetchPatients(); return; }
+        try {
+            const res = await fetch(API + '/api/patients/search?name=' + encodeURIComponent(term));
+            if (!res.ok) { showToast('Search failed', true); return; }
+            renderPatients(await res.json());
+        } catch (e) { showToast('Server connection error', true); }
+    }
+
+    function clearPatientSearch() {
+        document.getElementById('patient-search').value = '';
+        fetchPatients();
+    }
+
+    // Reuses the single patient modal for both register and edit.
+    async function editPatient(id) {
+        try {
+            const res = await fetch(API + '/api/patients/' + id);
+            if (!res.ok) { showToast('Could not load patient', true); return; }
+            const p = await res.json();
+            editingPatient = p;
+            document.getElementById('pat-fullName').value = p.fullName || '';
+            document.getElementById('pat-contact').value = p.contactNumber || '';
+            document.getElementById('pat-dob').value = p.dateOfBirth || '';
+            document.getElementById('pat-gender').value = p.gender || 'Male';
+            document.getElementById('pat-blood').value = p.bloodGroup || 'O+';
+            document.getElementById('pat-address').value = p.address || '';
+            document.getElementById('pat-emergency').value = p.emergencyContact || '';
+            document.getElementById('patientModalTitle').innerHTML = '<i class="fa-solid fa-user-pen text-cyan-600 mr-2"></i>Edit Patient';
+            document.getElementById('patientSubmitBtn').textContent = 'Update Patient';
+            openModal('patientModal');
+        } catch (e) { showToast('Server connection error', true); }
+    }
+
+    function openPatientModalForAdd() {
+        editingPatient = null;
+        document.getElementById('patientForm').reset();
+        document.getElementById('patientModalTitle').innerHTML = '<i class="fa-solid fa-user-plus text-cyan-600 mr-2"></i>Register New Patient';
+        document.getElementById('patientSubmitBtn').textContent = 'Register Patient';
+        openModal('patientModal');
     }
 
     async function submitPatient(event) {
@@ -620,10 +757,25 @@
             address: document.getElementById('pat-address').value,
             emergencyContact: document.getElementById('pat-emergency').value
         };
+        const editing = editingPatient !== null;
+        const url = editing ? API + '/api/patients/' + editingPatient.patientId : API + '/api/patients';
         try {
-            const res = await fetch(API + '/api/patients', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-            if (res.ok) { closePatientModal(); document.getElementById('patientForm').reset(); fetchPatients(); fetchDashboardStats(); showToast('Patient registered successfully!'); }
-            else { const err = await res.json(); showToast(err.messages ? err.messages.join(', ') : 'Failed to register patient', true); }
+            const res = await fetch(url, {
+                method: editing ? 'PUT' : 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                closePatientModal();
+                document.getElementById('patientForm').reset();
+                editingPatient = null;
+                searchPatients();
+                fetchDashboardStats();
+                showToast(editing ? 'Patient updated successfully!' : 'Patient registered successfully!');
+            } else {
+                const err = await res.json();
+                showToast(err.messages ? err.messages.join(', ') : 'Failed to save patient', true);
+            }
         } catch (e) { showToast('Server connection error', true); }
     }
 
@@ -631,7 +783,7 @@
         if (!confirm('Are you sure you want to delete this patient?')) return;
         try {
             const res = await fetch(API + '/api/patients/' + id, { method: 'DELETE' });
-            if (res.ok) { fetchPatients(); fetchDashboardStats(); showToast('Patient deleted'); }
+            if (res.ok) { searchPatients(); fetchDashboardStats(); showToast('Patient deleted'); }
             else { showToast('Failed to delete patient', true); }
         } catch (e) { showToast('Server error', true); }
     }
@@ -651,7 +803,7 @@
                     : app.appointmentStatus === 'CANCELLED'
                         ? '<span class="bg-red-50 text-red-600 text-xs px-2.5 py-1 rounded-full font-bold">Cancelled</span>'
                         : '<span class="bg-amber-50 text-amber-600 text-xs px-2.5 py-1 rounded-full font-bold">Scheduled</span>';
-                let cancelBtn = app.appointmentStatus === 'SCHEDULED'
+                let cancelBtn = (app.appointmentStatus !== 'CANCELLED' && app.appointmentStatus !== 'COMPLETED')
                     ? `<button onclick="cancelAppointment(${app.appointmentId})" class="text-red-500 hover:text-red-700 text-xs font-semibold"><i class="fa-solid fa-ban mr-1"></i>Cancel</button>`
                     : '';
                 return `<tr class="hover:bg-slate-50 transition">
@@ -692,7 +844,10 @@
         try {
             const res = await fetch(API + '/api/appointments/' + id + '/cancel', { method: 'PUT' });
             if (res.ok) { fetchAppointments(); showToast('Appointment cancelled'); }
-            else { showToast('Failed to cancel', true); }
+            else {
+                const err = await res.json().catch(() => null);
+                showToast(err && err.messages ? err.messages.join(', ') : 'Failed to cancel', true);
+            }
         } catch (e) { showToast('Server error', true); }
     }
 
@@ -763,6 +918,7 @@
         event.preventDefault();
         const data = {
             patient: { patientId: parseInt(document.getElementById('bill-patientId').value) },
+            billDate: document.getElementById('bill-date').value,
             consultationCharge: parseFloat(document.getElementById('bill-consultation').value) || 0,
             roomCharge: parseFloat(document.getElementById('bill-room').value) || 0,
             labCharge: parseFloat(document.getElementById('bill-lab').value) || 0,

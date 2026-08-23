@@ -24,7 +24,8 @@ public class Bill {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Patient patient;
 
-    @NotNull
+    // Defaulted to today by BillServiceImpl.generateBill when the client omits it,
+    // so no @NotNull here - that would reject the request before the service runs.
     @Column(name = "bill_date", nullable = false)
     private LocalDate billDate;
 
